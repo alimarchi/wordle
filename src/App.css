@@ -1,38 +1,201 @@
 .App {
+  background-color: rgb(255, 252, 252);
+  width: 100vw;
+  height: 100vh;
+  color: black;
+}
+
+body {
+  padding: 0%;
+  margin: 0;
+  background-color: rgb(255, 252, 252);
+}
+
+nav {
+  height: 60px;
+  width: 100%;
+  margin: 0;
+  border-bottom: 1px solid rgb(167, 164, 164);
+}
+
+nav > h1 {
+  margin: 0;
+  padding-left: 0.5em;
+  padding-top: 0.2em;
+  font-family: "Abril Fatface", cursive;
+  color: black;
+  font-size: 2.1em;
+}
+
+.alert {
+  background-color: black;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  padding: 0.7em;
   text-align: center;
+  border-radius: 0.5em;
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-box-shadow: -1px 12px 18px -7px rgba(0, 0, 0, 0.59);
+  -moz-box-shadow: -1px 12px 18px -7px rgba(0, 0, 0, 0.59);
+  box-shadow: -1px 12px 18px -7px rgba(0, 0, 0, 0.59);
+  opacity: 1;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.not-visible {
+  opacity: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.game {
+  width: 100%;
+  height: calc(100vh - 100px);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.board {
+  width: 90%;
+  height: 700px;
+  border: 1px solid transparent;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.row {
+  flex: 33%;
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+}
+
+.letter {
+  flex: 33%;
+  height: 100%;
+  border: 1px solid grey;
+  margin: 5px;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#correct {
+  background-color: #528d4e;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+#almost {
+  background-color: #b49f39;
+  color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+#error {
+  background-color: #6b6a6d;
+  color: white;
+}
+
+.keyboard {
+  width: 90%;
+  height: 300px;
+  margin-top: 60px;
+}
+
+.line1 {
+  flex: 20%;
+  display: flex;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+  margin: 2px;
+}
+.line2 {
+  flex: 33%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 2px;
+}
+.line3 {
+  flex: 33%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 2px;
+}
+
+.key {
+  width: 50px;
+  height: 55px;
+  margin: 3px;
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  background-color: rgb(206, 206, 214);
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#big {
+  width: 60px;
+  font-size: 12px;
+  padding-right: 0.2em;
+  padding-left: 0.2em;
+}
+#disabled {
+  background-color: #6b6a6d;
+  color: white;
+}
+
+/* Tablet devices */
+@media (min-width: 576px) {
+  nav > h1 {
+    margin-left: 4em;
   }
-  to {
-    transform: rotate(360deg);
+
+  .board {
+    width: 60%;
+    height: 600px;
+  }
+}
+
+/* Laptop devices */
+@media (min-width: 768px) {
+}
+/* Desktop */
+@media (min-width: 992px) {
+  nav > h1 {
+    margin-left: 8em;
+  }
+
+  .board {
+    width: 50%;
+  }
+}
+/* Large devices */
+@media (min-width: 1200px) {
+  nav > h1 {
+    margin-left: 30%;
+  }
+
+  .board {
+    width: 40%;
+    max-width: 565px;
+    max-height: 600px;
+  }
+}
+
+/* XXL devices */
+@media (min-width: 1400px) {
+  nav > h1 {
+    text-align: center;
+    margin-left: 0;
+    padding-left: 0;
   }
 }
