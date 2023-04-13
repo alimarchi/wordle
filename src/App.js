@@ -5,6 +5,7 @@ import { boardDefault, generateWordSet } from "./Words";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
+import Confetti from "react-confetti";
 
 export const AppContext = createContext();
 
@@ -24,9 +25,11 @@ const App = () => {
   const [alert, setAlert] = useState(false);
   const [visible, setVisible] = useState(false);
   const [newGame, setNewGame] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const handleVisibility = () => {
     setVisible(false);
+    setShowConfetti(false);
     setNewGame(true);
     const newBoardDefault = [
       ["", "", "", "", ""],
@@ -96,18 +99,22 @@ const App = () => {
     if (currentWord.toLowerCase() === correctWord.toLowerCase()) {
       setGameOver({ gameOver: true, guessedWord: true });
       setVisible(true);
+      setShowConfetti(true);
       return;
     }
 
-    if (currentAttempt.attempt === 5) {
+    if (currentAttempt.attempt === 5 && wordSet.has(currentWord.toLowerCase())) {
       setGameOver({ gameOver: true, guessedWord: false });
       setVisible(true);
     }
   };
 
+  console.log(correctWord)
+
   return (
     <>
       <div className="App">
+        {showConfetti && <Confetti />}
         <nav>
           <h1>Alice's Wordle</h1>
         </nav>
