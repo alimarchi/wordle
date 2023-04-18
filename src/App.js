@@ -6,6 +6,8 @@ import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
 import Confetti from "react-confetti";
+import { checkWord, getNewWord } from "./services/getWords";
+import Loader from "./components/UI/Spinner/Loader";
 
 export const AppContext = createContext();
 
@@ -15,7 +17,6 @@ const App = () => {
     attempt: 0,
     letterPosition: 0,
   });
-  const [wordSet, setWordSet] = useState(new Set());
   const [disabledLetters, setDisabledLetters] = useState([]);
   const [gameOver, setGameOver] = useState({
     gameOver: false,
@@ -24,8 +25,11 @@ const App = () => {
   const [correctWord, setCorrectWord] = useState("");
   const [alert, setAlert] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [newGame, setNewGame] = useState(false);
+  const [newGame, setNewGame] = useState(true);
   const [showConfetti, setShowConfetti] = useState(false);
+
+  const [isLoadingWord, setIsLoadingWord] = useState(true);
+  const [isLoadingGuess, setIsLoadingGuess] = useState(false);
 
   const handleVisibility = () => {
     setVisible(false);
@@ -48,10 +52,22 @@ const App = () => {
   };
 
   useEffect(() => {
-    generateWordSet().then((words) => {
-      setWordSet(words.wordSet);
-      setCorrectWord(words.todaysWord);
-    });
+    const getRandomWord = async () => {
+      setIsLoadingWord(true);
+      const word = await getNewWord();
+      const valid = await checkWord(word);
+      if (valid) {
+        console.log(word)
+        setCorrectWord(word);
+        setIsLoadingWord(false);
+      } else {
+        getRandomWord();
+      }
+    };
+    if (newGame) {
+      getRandomWord();
+      setNewGame(false)
+    }
   }, [newGame]);
 
   const onSelectLetter = (keyValue) => {
@@ -84,32 +100,42 @@ const App = () => {
       currentWord += board[currentAttempt.attempt][i];
     }
 
-    if (wordSet.has(currentWord.toLowerCase())) {
-      setCurrentAttempt({
-        attempt: currentAttempt.attempt + 1,
-        letterPosition: 0,
-      });
-    } else {
-      setAlert(true);
-      setTimeout(() => {
-        setAlert(false);
-      }, "3000");
-    }
+    setIsLoadingGuess(true);
+    checkWord(currentWord.toLowerCase()).then((valid) => {
+      setIsLoadingGuess(false);
+      if (valid) {
+        setCurrentAttempt({
+          attempt: currentAttempt.attempt + 1,
+          letterPosition: 0,
+        });
+      } else {
+        setAlert(true);
+        setTimeout(() => {
+          setAlert(false);
+        }, "3000");
+      }
+    });
 
     if (currentWord.toLowerCase() === correctWord.toLowerCase()) {
-      setGameOver({ gameOver: true, guessedWord: true });
-      setVisible(true);
-      setShowConfetti(true);
+      setTimeout(() => {
+        setGameOver({ gameOver: true, guessedWord: true });
+        setVisible(true);
+        setShowConfetti(true);
+      }, "1500")
       return;
     }
 
-    if (currentAttempt.attempt === 5 && wordSet.has(currentWord.toLowerCase())) {
-      setGameOver({ gameOver: true, guessedWord: false });
-      setVisible(true);
+    if (currentAttempt.attempt === 5) {
+      setIsLoadingGuess(true);
+      checkWord(currentWord.toLowerCase()).then((valid) => {
+        setIsLoadingGuess(false);
+        if (valid) {
+          setGameOver({ gameOver: true, guessedWord: false });
+          setVisible(true);
+        }
+      });
     }
   };
-
-  console.log(correctWord)
 
   return (
     <>
@@ -142,8 +168,11 @@ const App = () => {
             <div className={alert ? "alert" : "not-visible"}>
               Word not found
             </div>
-            <Board />
+            {isLoadingWord && <Loader />}
+            {!isLoadingWord && (<>
+            <Board /> 
             <Keyboard />
+            </>)}
           </div>
         </AppContext.Provider>
       </div>

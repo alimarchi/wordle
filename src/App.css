@@ -81,19 +81,26 @@ nav > h1 {
   font-weight: bold;
   color: black;
   font-family: Arial, Helvetica, sans-serif;
+  animation-delay: calc(var(--position) * 0.2s); 
 }
 
 #correct {
+  animation: flip 500ms ease forwards;
+  animation-delay: calc(var(--position) * 0.2s);
   background-color: #528d4e;
   color: white;
 }
 
 #almost {
+  animation: flip 500ms ease forwards;
+  animation-delay: calc(var(--position) * 0.2s);
   background-color: #b49f39;
   color: white;
 }
 
 #error {
+  animation: flip 500ms ease forwards;
+  animation-delay: calc(var(--position) * 0.2s);
   background-color: #6b6a6d;
   color: white;
 }
@@ -151,6 +158,18 @@ nav > h1 {
 #disabled {
   background-color: #6b6a6d;
   color: white;
+}
+
+@keyframes flip {
+  0% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
 }
 
 /* Tablet devices */

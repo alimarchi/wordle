@@ -7,6 +7,7 @@ const Letter = ({ letterPosition, attemptValue }) => {
     correctWord,
     currentAttempt,
     setDisabledLetters,
+    animation,
   } = useContext(AppContext);
   const letter = board[attemptValue][letterPosition];
 
@@ -24,7 +25,7 @@ const Letter = ({ letterPosition, attemptValue }) => {
   }, [currentAttempt.attempt]);
 
   return (
-    <div className="letter" id={letterState}>
+    <div className="letter" id={letterState.toString()} style={{ '--position': letterPosition }}>
       {letter}
     </div>
   );
