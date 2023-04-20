@@ -1,13 +1,15 @@
 import "./App.css";
 import ReactDOM from "react-dom";
 import { createContext, useState, useEffect } from "react";
-import { boardDefault, generateWordSet } from "./Words";
+import { boardDefault } from "./Words";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
 import Confetti from "react-confetti";
 import { checkWord, getNewWord } from "./services/getWords";
 import Loader from "./components/UI/Spinner/Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMoon, faSun, faChartSimple } from "@fortawesome/free-solid-svg-icons";
 
 export const AppContext = createContext();
 
@@ -30,6 +32,20 @@ const App = () => {
 
   const [isLoadingWord, setIsLoadingWord] = useState(true);
   const [isLoadingGuess, setIsLoadingGuess] = useState(false);
+
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
+
+  const toggleTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  };
 
   const handleVisibility = () => {
     setVisible(false);
@@ -54,10 +70,11 @@ const App = () => {
   useEffect(() => {
     const getRandomWord = async () => {
       setIsLoadingWord(true);
-      const word = await getNewWord();
+      //const word = await getNewWord();
+      const word = "party";
       const valid = await checkWord(word);
       if (valid) {
-        console.log(word)
+        console.log(word);
         setCorrectWord(word);
         setIsLoadingWord(false);
       } else {
@@ -66,7 +83,7 @@ const App = () => {
     };
     if (newGame) {
       getRandomWord();
-      setNewGame(false)
+      setNewGame(false);
     }
   }, [newGame]);
 
@@ -121,7 +138,7 @@ const App = () => {
         setGameOver({ gameOver: true, guessedWord: true });
         setVisible(true);
         setShowConfetti(true);
-      }, "1500")
+      }, "2000");
       return;
     }
 
@@ -130,8 +147,10 @@ const App = () => {
       checkWord(currentWord.toLowerCase()).then((valid) => {
         setIsLoadingGuess(false);
         if (valid) {
-          setGameOver({ gameOver: true, guessedWord: false });
-          setVisible(true);
+          setTimeout(() => {
+            setGameOver({ gameOver: true, guessedWord: false });
+            setVisible(true);
+          }, "1300");
         }
       });
     }
@@ -141,9 +160,7 @@ const App = () => {
     <>
       <div className="App">
         {showConfetti && <Confetti />}
-        <nav>
-          <h1>Alice's Wordle</h1>
-        </nav>
+
         <AppContext.Provider
           value={{
             board,
@@ -158,21 +175,39 @@ const App = () => {
             setDisabledLetters,
             gameOver,
             setGameOver,
+            theme,
           }}
         >
           {ReactDOM.createPortal(
             <GameOver visible={visible} onClose={handleVisibility} />,
             document.querySelector("#modal")
           )}
+          <nav>
+            <div className="nav-container">
+              <h1>Alice's Wordle</h1>
+              <div className="buttons-container">
+                <FontAwesomeIcon icon={faChartSimple} size="xl" clasName="stats" />
+              <label className="switch">
+                <input type="checkbox" />
+                <span className="slider round" onClick={toggleTheme}>
+                  <FontAwesomeIcon icon={faSun} size="lg" className="sun" />
+                  <FontAwesomeIcon icon={faMoon} size="lg" className="moon" />
+                </span>
+              </label>
+              </div>
+            </div>
+          </nav>
           <div className="game">
             <div className={alert ? "alert" : "not-visible"}>
               Word not found
             </div>
             {isLoadingWord && <Loader />}
-            {!isLoadingWord && (<>
-            <Board /> 
-            <Keyboard />
-            </>)}
+            {!isLoadingWord && (
+              <>
+                <Board />
+                <Keyboard />
+              </>
+            )}
           </div>
         </AppContext.Provider>
       </div>

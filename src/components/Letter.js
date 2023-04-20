@@ -1,18 +1,16 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../App";
 
 const Letter = ({ letterPosition, attemptValue }) => {
-  const {
-    board,
-    correctWord,
-    currentAttempt,
-    setDisabledLetters,
-    animation,
-  } = useContext(AppContext);
+  const { board, correctWord, currentAttempt, setDisabledLetters, theme } =
+    useContext(AppContext);
   const letter = board[attemptValue][letterPosition];
 
+  const [typed, setTyped] = useState(false);
+
   const correct = correctWord.toUpperCase()[letterPosition] === letter;
-  const almost = !correct && letter !== "" && correctWord.toUpperCase().includes(letter);
+  const almost =
+    !correct && letter !== "" && correctWord.toUpperCase().includes(letter);
 
   const letterState =
     currentAttempt.attempt > attemptValue &&
@@ -24,8 +22,20 @@ const Letter = ({ letterPosition, attemptValue }) => {
     }
   }, [currentAttempt.attempt]);
 
+  useEffect(() => {
+    if (letter !== "") {
+      setTyped(true)
+    } else {
+      setTyped(false)
+    }
+  }, [letter])
+
   return (
-    <div className="letter" id={letterState.toString()} style={{ '--position': letterPosition }}>
+    <div
+      className={`letter ${typed ? theme === "dark" ? "typed-dark" : "typed-light" : ""}`}
+      id={letterState.toString()}
+      style={{ "--position": letterPosition }}
+    >
       {letter}
     </div>
   );

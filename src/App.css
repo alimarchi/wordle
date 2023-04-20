@@ -1,30 +1,117 @@
-.App {
+.dark {
+  background-color: #333;
+  color: #fff;
+}
+
+.light {
   background-color: rgb(255, 252, 252);
+  color: #333;
+}
+
+.App {
   width: 100vw;
   height: 100vh;
-  color: black;
+  user-select: none;
 }
 
 body {
   padding: 0%;
   margin: 0;
-  background-color: rgb(255, 252, 252);
 }
 
-nav {
-  height: 60px;
-  width: 100%;
-  margin: 0;
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 20px;
+  align-items: center;
   border-bottom: 1px solid rgb(167, 164, 164);
 }
 
-nav > h1 {
+.nav-container > h1 {
   margin: 0;
-  padding-left: 0.5em;
-  padding-top: 0.2em;
   font-family: "Abril Fatface", cursive;
-  color: black;
   font-size: 2.1em;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.moon {
+  color: black;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+.sun {
+  color: white;
+  margin-top: 5px;
+  margin-left: 6px;
+}
+
+input:checked + .slider {
+  background-color: #6a6868;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #6a6868;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 
 .alert {
@@ -79,30 +166,66 @@ nav > h1 {
   place-items: center;
   font-size: 30px;
   font-weight: bold;
-  color: black;
   font-family: Arial, Helvetica, sans-serif;
-  animation-delay: calc(var(--position) * 0.2s); 
+  animation-delay: calc(var(--position) * 0.1s);
+}
+
+.typed-dark {
+  border: 2px solid white;
+  animation: bounce 0.2s ease-in-out forwards;
+}
+
+.typed-light {
+  border: 2px solid black;
+  animation: bounce 0.2s ease-in-out forwards;
 }
 
 #correct {
-  animation: flip 500ms ease forwards;
-  animation-delay: calc(var(--position) * 0.2s);
+  animation: flip 300ms ease forwards;
+  animation-delay: calc(var(--position) * 0.1s);
   background-color: #528d4e;
   color: white;
+  border: 1px solid #528d4e;
 }
 
 #almost {
-  animation: flip 500ms ease forwards;
-  animation-delay: calc(var(--position) * 0.2s);
+  animation: flip 300ms ease forwards;
+  animation-delay: calc(var(--position) * 0.1s);
   background-color: #b49f39;
   color: white;
+  border: 1px solid #b49f39;
 }
 
 #error {
-  animation: flip 500ms ease forwards;
-  animation-delay: calc(var(--position) * 0.2s);
+  animation: flip 300ms ease forwards;
+  animation-delay: calc(var(--position) * 0.1s);
   background-color: #6b6a6d;
   color: white;
+  border: 1px solid #6b6a6d;
+}
+
+@keyframes flip {
+  0% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .keyboard {
@@ -160,22 +283,11 @@ nav > h1 {
   color: white;
 }
 
-@keyframes flip {
-  0% {
-    transform: scaleY(1);
-  }
-  50% {
-    transform: scaleY(0);
-  }
-  100% {
-    transform: scaleY(1);
-  }
-}
-
 /* Tablet devices */
 @media (min-width: 576px) {
-  nav > h1 {
-    margin-left: 4em;
+  .nav-container {
+    padding-left: 150px;
+    padding-right: 150px;
   }
 
   .board {
@@ -186,11 +298,15 @@ nav > h1 {
 
 /* Laptop devices */
 @media (min-width: 768px) {
+  .nav-container{
+    justify-content: space-around;
+  }
 }
 /* Desktop */
 @media (min-width: 992px) {
-  nav > h1 {
-    margin-left: 8em;
+  .nav-container {
+    padding-left: 250px;
+    padding-right: 250px;
   }
 
   .board {
@@ -199,10 +315,6 @@ nav > h1 {
 }
 /* Large devices */
 @media (min-width: 1200px) {
-  nav > h1 {
-    margin-left: 30%;
-  }
-
   .board {
     width: 40%;
     max-width: 565px;
@@ -212,9 +324,11 @@ nav > h1 {
 
 /* XXL devices */
 @media (min-width: 1400px) {
-  nav > h1 {
-    text-align: center;
-    margin-left: 0;
-    padding-left: 0;
+  .nav-container {
+    justify-content: center;
+  }
+
+  .nav-container > h1 {
+    margin-right: 50px;
   }
 }
