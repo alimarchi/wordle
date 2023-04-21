@@ -1,0 +1,107 @@
+.modal {
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  visibility: hidden;
+}
+
+.modal-show {
+  visibility: visible;
+}
+
+.modal-dialog {
+  position: absolute;
+  width: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 0.5rem;
+  -webkit-box-shadow: 11px 10px 19px -3px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 11px 10px 19px -3px rgba(0, 0, 0, 0.75);
+  box-shadow: 11px 10px 19px -3px rgba(0, 0, 0, 0.75);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.dark {
+  background-color: #333;
+}
+
+.light {
+  background-color: white;
+}
+
+.close {
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: rgb(206, 206, 214);
+}
+
+.modal-body {
+  padding: 1em 1.5em 0.5em 1.5em;
+  flex-grow: 1;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.card {
+  border-radius: 0.5rem;
+  padding: 1px 20px;
+  margin-bottom: 10px;
+}
+
+.card-light {
+  background-color: rgb(206, 206, 214);
+}
+
+.card-dark {
+  background-color: #494848;
+}
+
+.card h1 {
+  font-weight: bold;
+  text-shadow: 2px 4px 4px #333;
+}
+
+.stats-button {
+  background-color: transparent;
+  border-radius: 0.3rem;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.stats-dark {
+  border: 1px solid white;
+  color: white;
+}
+
+.stats-light {
+    border: 1px solid black;
+    color: black;
+  }
+
+.stats-button:hover {
+  color: red;
+  border: 1px solid red;
+}
+
+@media (min-width: 1400px) {
+  .modal-dialog {
+    top: 30%;
+  }
+}

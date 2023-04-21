@@ -9,7 +9,12 @@ import Confetti from "react-confetti";
 import { checkWord, getNewWord } from "./services/getWords";
 import Loader from "./components/UI/Spinner/Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faSun, faChartSimple } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMoon,
+  faSun,
+  faChartSimple,
+} from "@fortawesome/free-solid-svg-icons";
+import Statistics from "./components/Statistics";
 
 export const AppContext = createContext();
 
@@ -34,6 +39,18 @@ const App = () => {
   const [isLoadingGuess, setIsLoadingGuess] = useState(false);
 
   const [theme, setTheme] = useState("light");
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [stats, setStats] = useState({});
+
+  useEffect(() => {
+    const storedStats = JSON.parse(localStorage.getItem("stats"));
+    if (storedStats) {
+      setStats({ match: storedStats.match, won: storedStats.won });
+    } else {
+      setStats({ match: 0, won: 0 });
+    }
+  }, [isVisible]);
 
   useEffect(() => {
     document.body.className = theme;
@@ -87,6 +104,10 @@ const App = () => {
     }
   }, [newGame]);
 
+  useEffect(() => {
+    localStorage.setItem("stats", JSON.stringify(stats));
+  }, [stats]);
+
   const onSelectLetter = (keyValue) => {
     if (currentAttempt.letterPosition > 4) return;
     const newBoard = [...board];
@@ -136,11 +157,17 @@ const App = () => {
     if (currentWord.toLowerCase() === correctWord.toLowerCase()) {
       setTimeout(() => {
         setGameOver({ gameOver: true, guessedWord: true });
+        setStats((prevStats) => ({
+          match: prevStats.match + 1,
+          won: prevStats.won + 1,
+        }));
         setVisible(true);
         setShowConfetti(true);
       }, "2000");
       return;
     }
+
+    console.log(stats);
 
     if (currentAttempt.attempt === 5) {
       setIsLoadingGuess(true);
@@ -149,6 +176,10 @@ const App = () => {
         if (valid) {
           setTimeout(() => {
             setGameOver({ gameOver: true, guessedWord: false });
+            setStats((prevStats) => ({
+              match: prevStats.match + 1,
+              won: prevStats.won,
+            }));
             setVisible(true);
           }, "1300");
         }
@@ -176,24 +207,36 @@ const App = () => {
             gameOver,
             setGameOver,
             theme,
+            setIsVisible,
           }}
         >
           {ReactDOM.createPortal(
             <GameOver visible={visible} onClose={handleVisibility} />,
             document.querySelector("#modal")
           )}
+          {ReactDOM.createPortal(
+            <Statistics isVisible={isVisible} stats={stats} />,
+            document.querySelector("#modal")
+          )}
           <nav>
             <div className="nav-container">
               <h1>Alice's Wordle</h1>
               <div className="buttons-container">
-                <FontAwesomeIcon icon={faChartSimple} size="xl" clasName="stats" />
-              <label className="switch">
-                <input type="checkbox" />
-                <span className="slider round" onClick={toggleTheme}>
-                  <FontAwesomeIcon icon={faSun} size="lg" className="sun" />
-                  <FontAwesomeIcon icon={faMoon} size="lg" className="moon" />
-                </span>
-              </label>
+                <FontAwesomeIcon
+                  icon={faChartSimple}
+                  size="lg"
+                  className="stats"
+                  onClick={() => {
+                    setIsVisible(true);
+                  }}
+                />
+                <label className="switch">
+                  <input type="checkbox" />
+                  <span className="slider round" onClick={toggleTheme}>
+                    <FontAwesomeIcon icon={faSun} size="lg" className="sun" />
+                    <FontAwesomeIcon icon={faMoon} size="lg" className="moon" />
+                  </span>
+                </label>
               </div>
             </div>
           </nav>

@@ -33,6 +33,18 @@ body {
   font-size: 2.1em;
 }
 
+.stats {
+  cursor: pointer;
+  margin-right: 10px;
+  border: 1px solid;
+  border-radius: 50%;
+  padding: 7px;
+}
+
+.stats:hover {
+  color: #ccc;
+}
+
 .buttons-container {
   display: flex;
   justify-content: space-around;
