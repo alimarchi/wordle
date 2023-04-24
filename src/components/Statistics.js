@@ -7,10 +7,14 @@ import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 const Statistics = ({ isVisible }) => {
   const { theme, setIsVisible } = useContext(AppContext);
 
+  // Set state for number of matches played and games won
   const [match, setMatch] = useState(0);
   const [won, setWon] = useState(0);
-  const [reset, setReset] = useState(false)
 
+  // Reset state when the Reset Stats button is clicked
+  const [reset, setReset] = useState(false);
+
+  // Load stats from local storage
   useEffect(() => {
     const storedStats = JSON.parse(localStorage.getItem("stats"));
     if (storedStats) {
@@ -22,10 +26,12 @@ const Statistics = ({ isVisible }) => {
     }
   }, [reset, isVisible]);
 
+  // Close modal when close button is clicked
   const onClose = () => {
     setIsVisible(false);
   };
 
+  // Calculate percentage of games won
   const getPercent = (totalMatches, totalWon) => {
     let result = Math.round((totalWon * 100) / totalMatches);
     if (totalMatches === 0) {
@@ -35,9 +41,10 @@ const Statistics = ({ isVisible }) => {
     }
   };
 
+  // Reset stats when Reset Stats button is clicked
   const onReset = () => {
     localStorage.clear();
-    setReset(!reset)
+    setReset(!reset);
   };
 
   return (

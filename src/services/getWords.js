@@ -1,7 +1,12 @@
 const apiKey = process.env.REACT_APP_API_KEY;
 
-export const checkWord = async (word) => {
+/**
+ * checkWord is an async function used to check if the inserted word exist in the dictionary, using dictionary-by-api api
+ * @param {*} word
+ * @returns true or false, if the word exists or not
+ */
 
+export const checkWord = async (word) => {
   const options = {
     method: "GET",
     headers: {
@@ -26,6 +31,11 @@ export const checkWord = async (word) => {
   }
 };
 
+/**
+ * getNewWord is a function used to get a random word with 5 letters using random-words api
+ * @returns a 5 letter word
+ */
+
 export const getNewWord = async () => {
   const options = {
     method: "GET",
@@ -42,7 +52,7 @@ export const getNewWord = async () => {
     );
     const word = await response.text();
     return word;
-  } catch (error){
+  } catch (error) {
     throw new Error("Error getting the new word.");
   }
 };

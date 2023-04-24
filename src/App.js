@@ -1,25 +1,34 @@
 import "./App.css";
 import ReactDOM from "react-dom";
 import { createContext, useState, useEffect } from "react";
-import { boardDefault } from "./Words";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
+import Statistics from "./components/Statistics";
 import Confetti from "react-confetti";
-import { checkWord, getNewWord } from "./services/getWords";
 import Loader from "./components/UI/Spinner/Loader";
+import { checkWord, getNewWord } from "./services/getWords";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMoon,
   faSun,
   faChartSimple,
 } from "@fortawesome/free-solid-svg-icons";
-import Statistics from "./components/Statistics";
 
 export const AppContext = createContext();
 
 const App = () => {
+  // Set the initial state of the board game
+  const boardDefault = [
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+    ["", "", "", "", ""],
+  ];
   const [board, setBoard] = useState(boardDefault);
+  // Set the initial state of the current attempt
   const [currentAttempt, setCurrentAttempt] = useState({
     attempt: 0,
     letterPosition: 0,
@@ -41,8 +50,9 @@ const App = () => {
   const [theme, setTheme] = useState("light");
 
   const [isVisible, setIsVisible] = useState(false);
-  const [stats, setStats] = useState({});
+  const [stats, setStats] = useState({ match: 0, won: 0 });
 
+  // Load stored game statistics from local storage and update ths stats state accordingly
   useEffect(() => {
     const storedStats = JSON.parse(localStorage.getItem("stats"));
     if (storedStats) {
@@ -52,10 +62,12 @@ const App = () => {
     }
   }, [isVisible]);
 
+  // Set the body class to the current theme
   useEffect(() => {
     document.body.className = theme;
   }, [theme]);
 
+  // Toggle between dark and light mode
   const toggleTheme = () => {
     if (theme === "light") {
       setTheme("dark");
@@ -64,6 +76,7 @@ const App = () => {
     }
   };
 
+  // Reset the game board and other relevant state when the game is over
   const handleVisibility = () => {
     setVisible(false);
     setShowConfetti(false);
@@ -84,11 +97,12 @@ const App = () => {
     setDisabledLetters([]);
   };
 
+  // Load a new word when a new game starts
   useEffect(() => {
     const getRandomWord = async () => {
       setIsLoadingWord(true);
-      //const word = await getNewWord();
-      const word = "party";
+      const word = await getNewWord();
+      //const word = "party";
       const valid = await checkWord(word);
       if (valid) {
         console.log(word);
@@ -166,8 +180,6 @@ const App = () => {
       }, "2000");
       return;
     }
-
-    console.log(stats);
 
     if (currentAttempt.attempt === 5) {
       setIsLoadingGuess(true);

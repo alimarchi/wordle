@@ -19,6 +19,8 @@ body {
   margin: 0;
 }
 
+/* Nav container with title, statistics icon and switch mode */
+
 .nav-container {
   display: flex;
   justify-content: space-between;
@@ -125,6 +127,8 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+/* alert when a word doesn't exist */
 
 .alert {
   background-color: black;
@@ -310,7 +314,7 @@ input:checked + .slider:before {
 
 /* Laptop devices */
 @media (min-width: 768px) {
-  .nav-container{
+  .nav-container {
     justify-content: space-around;
   }
 }

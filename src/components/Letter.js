@@ -4,6 +4,8 @@ import { AppContext } from "../App";
 const Letter = ({ letterPosition, attemptValue }) => {
   const { board, correctWord, currentAttempt, setDisabledLetters, theme } =
     useContext(AppContext);
+
+  // "letter" gets its value from the "board" using the "attemptValue" and "letterPosition" passed in as props.
   const letter = board[attemptValue][letterPosition];
 
   const [typed, setTyped] = useState(false);
@@ -12,6 +14,7 @@ const Letter = ({ letterPosition, attemptValue }) => {
   const almost =
     !correct && letter !== "" && correctWord.toUpperCase().includes(letter);
 
+  // letterState is set to "correct", "almost", or "error"
   const letterState =
     currentAttempt.attempt > attemptValue &&
     (correct ? "correct" : almost ? "almost" : "error");
@@ -24,15 +27,17 @@ const Letter = ({ letterPosition, attemptValue }) => {
 
   useEffect(() => {
     if (letter !== "") {
-      setTyped(true)
+      setTyped(true);
     } else {
-      setTyped(false)
+      setTyped(false);
     }
-  }, [letter])
+  }, [letter]);
 
   return (
     <div
-      className={`letter ${typed ? theme === "dark" ? "typed-dark" : "typed-light" : ""}`}
+      className={`letter ${
+        typed ? (theme === "dark" ? "typed-dark" : "typed-light") : ""
+      }`}
       id={letterState.toString()}
       style={{ "--position": letterPosition }}
     >
