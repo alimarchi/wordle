@@ -1,7 +1,10 @@
 # React Wordle
-____
+
+---
 
 This is a clone project of the popular word guessing game, Wordle. The main difference with the real application is that you can play endlessly; you're not limited to one word per day. The project is made using React and JavaScript and is based on the tutorial by [PedroTech](https://github.com/machadop1407/Wordle-Clone-React), with customized features and personalized CSS styles.
+
+App is live [here](https://alimarchi.github.io/wordle/), check it out!
 
 #### Features
 
@@ -18,6 +21,7 @@ Here are the main new features that have been implemented:
 #### How to run the project locally:
 
 To run the project locally, clone the repository and perform the following command-line actions:
+
 ```
 cd wordle
 npm install
@@ -26,5 +30,6 @@ npm run start
 
 The application will automatically open in your browser at http://localhost:3000.
 
-___
+---
+
 This repository is open sourced for learning purposes only - the original creator(s) of Wordle own all applicable rights to the game itself.
